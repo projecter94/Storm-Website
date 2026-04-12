@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storm Captcha</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="gatekeeper-body">
+    <div id="ambient-glow"></div>
+    <div id="dot" onclick="catchDot()"></div>
+    
+    <div id="system-text">AWAITING SEQUENCE...</div>
+
+    <script src="app.js"></script>
+    <script>
+        // Gatekeeper specific logic
+        sessionStorage.removeItem('storm_access');
+        let clicks = 0;
+        const dot = document.getElementById('dot');
+        const text = document.getElementById('system-text');
+
+        function moveDot() {
+            const maxX = window.innerWidth - 30;
+            const maxY = window.innerHeight - 30;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            dot.style.left = randomX + 'px';
+            dot.style.top = randomY + 'px';
+            
+            // Add a pulse effect on move
+            dot.style.transform = 'scale(1.5)';
+            setTimeout(() => dot.style.transform = 'scale(1)', 150);
+        }
+
+        function catchDot() {
+            clicks++;
+            text.innerText = `SEQUENCE: ${clicks}/5`;
+            text.style.color = '#00d2ff';
+            text.style.textShadow = '0 0 10px #00d2ff';
+            
+            if (clicks >= 5) {
+                dot.style.display = 'none';
+                text.innerText = "ACCESS GRANTED. REDIRECTING...";
+                text.style.color = '#00ffaa';
+                text.style.textShadow = '0 0 10px #00ffaa';
+                sessionStorage.setItem('storm_access', 'true');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+            } else {
+                moveDot();
+            }
+        }
+
+        // Initial placement
+        setTimeout(moveDot, 500);
+    </script>
+</body>
+</html>

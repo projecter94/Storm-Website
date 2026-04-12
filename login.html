@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storm Login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="auth-body">
+    <div class="scanlines"></div>
+    
+    <div class="auth-container">
+        <img src="input_file_0.png" alt="Storm Logo" class="auth-logo">
+        <h1 class="glitch" data-text="S T O R M">S T O R M</h1>
+        <p class="subtitle">SECURE TERMINAL ACCESS</p>
+        
+        <div id="login-error" class="error-msg"></div>
+
+        <div class="input-group">
+            <input type="text" id="login-user" placeholder=" " autocomplete="off">
+            <label>IDENTIFIER</label>
+        </div>
+        <div class="input-group">
+            <input type="password" id="login-pass" placeholder=" ">
+            <label>PASSPHRASE</label>
+        </div>
+        
+        <button class="cyber-btn" onclick="attemptLogin()">
+            <span class="btn-text">INITIALIZE CONNECTION</span>
+        </button>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Security check: Ensure they completed the dot game
+        if (sessionStorage.getItem('storm_access') !== 'true') {
+            document.body.innerHTML = '<h1 style="color:red; text-align:center; margin-top:20vh;">ACCESS DENIED. SEQUENCE INCOMPLETE.</h1>';
+            setTimeout(() => window.location.href = 'index.html', 2000);
+        }
+        initDB(); // Ensure admin account exists
+    </script>
+</body>
+</html>
