@@ -3,26 +3,46 @@ async function attemptLogin() {
     const userIn = document.getElementById('login-user').value.trim();
     const passIn = document.getElementById('login-pass').value;
     const errorDiv = document.getElementById('login-error');
+    const btn = document.querySelector('.cyber-btn');
 
-    const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: userIn, password: passIn })
-    });
+    errorDiv.innerText = ''; // clear previous error
 
-    const data = await response.json();
+    if (!userIn || !passIn) {
+        errorDiv.innerText = "ERROR: USERNAME AND PASSWORD REQUIRED.";
+        return;
+    }
 
-    if (data.success) {
-        const btn = document.querySelector('.cyber-btn');
-        btn.style.background = '#00d2ff';
+    try {
+        btn.innerText = "CONNECTING...";
+        btn.style.background = '#ffaa00';
         btn.style.color = '#000';
-        btn.innerText = "ACCESS GRANTED";
-        
-        // We no longer store the user in sessionStorage to prevent hacking.
-        // The server placed a secure HTTP-Only cookie.
-        setTimeout(() => window.location.href = '/dashboard.html', 800);
-    } else {
-        errorDiv.innerText = "ERROR: INVALID CREDENTIALS.";
+
+        const response = await fetch('/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username: userIn, password: passIn })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            btn.style.background = '#00d2ff';
+            btn.style.color = '#000';
+            btn.innerText = "ACCESS GRANTED";
+            
+            setTimeout(() => window.location.href = '/dashboard.html', 800);
+        } else {
+            errorDiv.innerText = "ERROR: INVALID CREDENTIALS.";
+            btn.innerText = "INITIALIZE CONNECTION";
+            btn.style.background = '';
+            btn.style.color = '';
+        }
+    } catch (err) {
+        console.error("Login error:", err);
+        errorDiv.innerText = "ERROR: SERVER CONNECTION FAILED.";
+        btn.innerText = "INITIALIZE CONNECTION";
+        btn.style.background = '';
+        btn.style.color = '';
     }
 }
 
