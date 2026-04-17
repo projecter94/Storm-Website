@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Storm Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dash-body">
+    <div class="scanlines"></div>
+
+    <nav class="sidebar">
+        <div class="brand">
+            <img src="input_file_0.png" alt="Logo" class="nav-logo">
+            <h2>STORM</h2>
+        </div>
+        <ul class="nav-links">
+            <li onclick="switchTab('terminal')" class="active">Terminal</li>
+            <li onclick="switchTab('chat')">Global Comm</li>
+            <li onclick="switchTab('admin')" id="admin-nav" style="display:none;">Admin Panel</li>
+        </ul>
+        <div class="user-info">
+            <span id="current-user-display">User</span>
+            <button class="logout-btn" onclick="logout()">DISCONNECT</button>
+        </div>
+    </nav>
+
+    <main class="content">
+        <!-- TERMINAL TAB -->
+        <section id="tab-terminal" class="tab-content active">
+            <div class="panel">
+                <h3>SYSTEM STATUS</h3>
+                <div class="stats">
+                    <div class="stat-box">CPU OVERRIDE: <span class="blue-text">ACTIVE</span></div>
+                    <div class="stat-box">NETWORK ENCRYPTION: <span class="blue-text">AES-256</span></div>
+                    <div class="stat-box">ANONYMITY SHIELD: <span class="blue-text">MAXIMUM</span></div>
+                </div>
+                <div class="terminal-window" id="sys-logs">
+                    <p>> Connection established.</p>
+                    <p>> Welcome to STORM network.</p>
+                    <p>> Monitoring global traffic...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- CHAT TAB -->
+        <section id="tab-chat" class="tab-content">
+            <div class="panel chat-panel">
+                <div class="chat-header">
+                    <h3>SECURE GLOBAL CHANNEL</h3>
+                    <span class="status-dot"></span>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <!-- Messages inject here via JS -->
+                </div>
+                
+                <div class="chat-input-area" id="reply-banner-container" style="display:none;">
+                    <div class="reply-banner">
+                        Replying to: <span id="reply-to-text"></span>
+                        <button onclick="cancelReply()">X</button>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Transmit secure message..." onkeypress="handleChatKey(event)">
+                    <button class="cyber-btn small" onclick="sendMessage()">SEND</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN TAB -->
+        <section id="tab-admin" class="tab-content">
+            <div class="panel">
+                <h3>ACCESS MANAGEMENT</h3>
+                <div class="admin-grid">
+                    <div class="admin-form">
+                        <h4>CREATE / EDIT USER</h4>
+                        <input type="hidden" id="edit-original-username">
+                        <input type="text" id="new-user" placeholder="Username">
+                        <input type="password" id="new-pass" placeholder="Password">
+                        <select id="new-role">
+                            <option value="user">Standard User</option>
+                            <option value="admin">Administrator</option>
+                        </select>
+                        <button class="cyber-btn small" onclick="saveUser()">SAVE PROTOCOL</button>
+                    </div>
+                    <div class="user-list-container">
+                        <table class="user-table">
+                            <thead>
+                                <tr>
+                                    <th>USER</th>
+                                    <th>ROLE</th>
+                                    <th>ACTIONS</th>
+                                </tr>
+                            </thead>
+                            <tbody id="user-table-body">
+                                <!-- Users injected via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+<script src="app.js"></script>
+    <script>
+        initDashboard(); // The server already checked our security token before letting this load!
+    </script>
+</body>
+</html>
